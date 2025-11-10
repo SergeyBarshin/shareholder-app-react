@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
-const REPO_NAME = "SergeyBarshin"; // Имя репозитория
+const REPO_NAME = "shareholder-app-react"; // Имя репозитория
 const BASE_PATH = `/${REPO_NAME}`; // /SergeyBarshin/
 
 export default defineConfig({

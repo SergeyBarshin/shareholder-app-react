@@ -4,7 +4,8 @@ import HomePage from "./pages/HomePage";
 import ShareholdersPage from "./pages/ShareholdersPage";
 import ShareholderPage from "./pages/ShareholderPage";
 import "bootstrap/dist/css/bootstrap.min.css";
-const BASE_NAME = "/SergeyBarshin/";
+
+const BASE_NAME = "/shareholder-app-react";
 
 function App() {
   return (
