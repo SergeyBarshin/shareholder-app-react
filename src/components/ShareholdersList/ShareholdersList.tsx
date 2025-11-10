@@ -1,6 +1,10 @@
-import { Row, Col } from "react-bootstrap";
+// Удаляем импорты Row и Col
+// import { Row, Col } from "react-bootstrap";
 import ShareholderCard from "../ShareholderCard/ShareholderCard";
 import { type Shareholder } from "../../modules/ShareholdersTypes";
+
+// Импортируем новый CSS файл
+import "./ShareholdersList.css";
 
 export default function ShareholdersList({
   shareholders,
@@ -8,13 +12,12 @@ export default function ShareholdersList({
   shareholders: Shareholder[];
 }) {
   return (
-    // g-4 - средние отступы, gy-5 - увеличенные вертикальные отступы для "парящих" карточек
-    <Row xs={1} sm={2} lg={3} className="g-4 gy-5">
+    // Заменяем Row/Col на div с классом grid-list
+    <div className="grid-list">
       {shareholders.map((s) => (
-        <Col key={s.id} className="d-flex align-items-stretch py-3">
-          <ShareholderCard shareholder={s} />
-        </Col>
+        // Карточка теперь без Col, чтобы Grid сам управлял колонками
+        <ShareholderCard key={s.id} shareholder={s} />
       ))}
-    </Row>
+    </div>
   );
 }

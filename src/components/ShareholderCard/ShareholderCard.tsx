@@ -57,6 +57,7 @@ export default function ShareholderCard({
         <div className="mt-auto">
           <div className="d-grid gap-2">
             <Button
+              // @ts-ignore
               as={Link}
               to={`/shareholder/${shareholder.id}`}
               variant="danger"

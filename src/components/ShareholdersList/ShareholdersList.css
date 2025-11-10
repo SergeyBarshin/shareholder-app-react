@@ -1,0 +1,41 @@
+.grid-list {
+  display: grid;
+  /* Базовый Grid: автоматический расчет колонок, минимальная ширина карточки 280px */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px; /* Отступы между карточками */
+  width: 100%;
+}
+
+/* 1. Мобильные устройства (макс. 767px) */
+/* 1 колонка, минимальный размер карточки (при 320px) */
+@media (max-width: 767.98px) {
+  .grid-list {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* 2. Планшеты (768px до 1199px) */
+/* 2 колонки, минимальный размер карточки 320px */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .grid-list {
+    /* Фиксируем 2 колонки, чтобы показать явное перестроение */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+/* 3. Десктоп (мин. 1200px) */
+/* 3 колонки, минимальный размер карточки 300px */
+@media (min-width: 1200px) {
+  .grid-list {
+    /* Фиксируем 3 колонки, чтобы показать явное перестроение */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+}
+
+/* Для демонстрации в браузере: */
+/* - При ширине > 1200px: будет 3 колонки (grid-template-columns: repeat(3, 1fr);) */
+/* - При ширине 768px - 1199px: будет 2 колонки (grid-template-columns: repeat(2, 1fr);) */
+/* - При ширине < 768px: будет 1 колонка (grid-template-columns: 1fr;) */

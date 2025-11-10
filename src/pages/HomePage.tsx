@@ -37,6 +37,7 @@ export default function HomePage() {
                   расчета дивидендов.
                 </p>
                 <Button
+                  // @ts-ignore
                   as={Link}
                   to={ROUTES.SHAREHOLDERS}
                   variant="danger"
@@ -57,6 +58,7 @@ export default function HomePage() {
                   резервным доступом к mock-данным.
                 </p>
                 <Button
+                  // @ts-ignore
                   as={Link}
                   to={ROUTES.SHAREHOLDERS}
                   variant="outline-danger"
@@ -79,6 +81,7 @@ export default function HomePage() {
                   акционера по имени.
                 </p>
                 <Button
+                  // @ts-ignore
                   as={Link}
                   to={ROUTES.SHAREHOLDERS}
                   variant="danger"

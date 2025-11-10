@@ -3,27 +3,29 @@ import Header from "../components/Header/Header";
 import { Container, Spinner, Alert, Row, Col } from "react-bootstrap";
 import { BreadCrumbs } from "../components/BreadCrumbs/BreadCrumbs";
 import { ROUTE_LABELS } from "../Routes";
-import { listShareholders, getCartStatus } from "../modules/ShareholdersApi";
+import { listShareholders } from "../modules/ShareholdersApi";
 import type { Shareholder } from "../modules/ShareholdersTypes";
 import Search from "../components/Search/Search";
 import ShareholdersList from "../components/ShareholdersList/ShareholdersList";
-import FloatingCartIcon from "../components/FloatingCartIcon/FloatingCartIcon";
-import type { CartStatus } from "../modules/ShareholdersApi"; // Импортируем CartStatus
 
-// ИЗМЕНЕНИЕ: Используем новые имена полей draft_id и count
-const initialCartStatus: CartStatus = {
-  draft_id: -1,
-  count: 0,
-};
+// --- НОВЫЕ ИМПОРТЫ REDUX ---
+import { useSearchInput, useAppliedSearch } from "../slices/filterSlice";
+import { useFilterData } from "../hooks/useFilterData";
+// --------------------------
 
 export default function ShareholdersPage() {
   const [shareholders, setShareholders] = useState<Shareholder[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
+
+  // --- REDUX HOOKS ---
+  const { setSearchInput, applySearch } = useFilterData();
+  const searchInput = useSearchInput(); // для поля ввода
+  const appliedSearch = useAppliedSearch(); // для API
+  // --------------------
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  // Добавляем состояние для корзины
-  const [cartStatus, setCartStatus] = useState<CartStatus>(initialCartStatus);
 
+  // Функция загрузки данных, принимает фильтр
   const fetchShareholders = async (query?: string) => {
     setLoading(true);
     setError(null);
@@ -42,24 +44,24 @@ export default function ShareholdersPage() {
     }
   };
 
-  const fetchCartStatus = async () => {
-    try {
-      const status = await getCartStatus();
-      setCartStatus(status);
-    } catch (e) {
-      // При ошибке или 401 API-функция сама вернет неактивный статус,
-      // поэтому просто сбрасываем состояние на всякий случай.
-      setCartStatus(initialCartStatus);
-    }
-  };
-
+  // 1. useEffect для загрузки данных при изменении примененного фильтра (appliedSearch)
   useEffect(() => {
-    fetchShareholders();
-    fetchCartStatus(); // Загружаем статус корзины при монтировании
-  }, []);
+    // Вызываем загрузку с примененным фильтром
+    fetchShareholders(appliedSearch);
+  }, [appliedSearch]);
 
+  // 2. useEffect для синхронизации input с appliedSearch при первом рендере
+  // Это гарантирует, что поле ввода корректно отобразит сохраненный фильтр
+  useEffect(() => {
+    // Устанавливаем в поле ввода значение последнего примененного фильтра
+    if (searchInput !== appliedSearch) {
+      setSearchInput(appliedSearch);
+    }
+  }, [appliedSearch]); // При изменении appliedSearch (например, при возврате на страницу)
+
+  // Обработчик кнопки поиска
   const handleSearch = () => {
-    fetchShareholders(searchQuery);
+    applySearch(); // Это обновит appliedSearch в Redux, что триггернет useEffect[appliedSearch]
   };
 
   return (
@@ -76,9 +78,9 @@ export default function ShareholdersPage() {
         <Row className="justify-content-center mb-5">
           <Col md={8} lg={6}>
             <Search
-              query={searchQuery}
-              onQueryChange={setSearchQuery}
-              onSearch={handleSearch}
+              query={searchInput} // В поле показываем то, что вводит пользователь
+              onQueryChange={setSearchInput} // Обновляем Redux.searchInput
+              onSearch={handleSearch} // Вызываем Redux.applySearch
             />
           </Col>
         </Row>
@@ -102,8 +104,6 @@ export default function ShareholdersPage() {
           </>
         )}
       </Container>
-      {/* Добавляем плавающую иконку корзины */}
-      <FloatingCartIcon status={cartStatus} />
     </div>
   );
 }

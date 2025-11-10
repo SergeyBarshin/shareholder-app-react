@@ -4,10 +4,11 @@ import HomePage from "./pages/HomePage";
 import ShareholdersPage from "./pages/ShareholdersPage";
 import ShareholderPage from "./pages/ShareholderPage";
 import "bootstrap/dist/css/bootstrap.min.css";
+const BASE_NAME = "/SergeyBarshin/";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={BASE_NAME}>
       <Routes>
         <Route path={ROUTES.HOME} element={<HomePage />} />
         <Route path={ROUTES.SHAREHOLDERS} element={<ShareholdersPage />} />

@@ -2,9 +2,9 @@ import { Form, InputGroup } from "react-bootstrap";
 import searchIcon from "../../assets/search.svg";
 
 interface SearchProps {
-  query: string;
-  onQueryChange: (query: string) => void;
-  onSearch: () => void;
+  query: string; // Значение из Redux.searchInput
+  onQueryChange: (query: string) => void; // Redux action (setSearchInput)
+  onSearch: () => void; // Redux action (applySearch)
 }
 
 export default function Search({
@@ -14,7 +14,7 @@ export default function Search({
 }: SearchProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch();
+    onSearch(); // Вызываем Redux action applySearch
   };
 
   return (
@@ -51,9 +51,11 @@ export default function Search({
           type="text"
           placeholder="Поиск акционера..."
           aria-label="Поиск акционера"
-          value={query}
-          onChange={(e) => onQueryChange(e.target.value)}
+          value={query} // Связано с Redux.searchInput
+          onChange={(e) => onQueryChange(e.target.value)} // Обновляет Redux.searchInput
         />
+        {/* <Button type="submit" variant="danger" className="rounded-end-pill">Найти</Button> */}
+        {/* При нажатии Enter в поле ввода вызывается handleSubmit, который вызывает onSearch/applySearch */}
       </InputGroup>
     </Form>
   );
