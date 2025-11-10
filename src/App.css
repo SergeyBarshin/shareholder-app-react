@@ -18,3 +18,8 @@ body {
   --bs-btn-disabled-bg: #ef3124;
   --bs-btn-disabled-border-color: #ef3124;
 }
+
+.badge-red {
+  --bs-badge-color: #fff;
+  --bs-badge-bg: #ef3124;
+}

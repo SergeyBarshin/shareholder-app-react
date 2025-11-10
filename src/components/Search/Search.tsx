@@ -1,5 +1,5 @@
 import { Form, InputGroup } from "react-bootstrap";
-import searchIcon from "../../assets/search.svg"; // Положите иконку поиска в src/assets
+import searchIcon from "../../assets/search.svg";
 
 interface SearchProps {
   query: string;
@@ -23,20 +23,31 @@ export default function Search({
       style={{ maxWidth: "540px" }}
       className="w-100 mx-auto"
     >
-      <InputGroup className="shadow-sm">
+      {/* Убираем тень с родителя, чтобы она не была квадратной */}
+      <InputGroup>
+        {/* Добавляем класс для скругления левой части и тень */}
         <InputGroup.Text
-          style={{ backgroundColor: "white", borderRight: "none" }}
+          className="rounded-start-pill shadow-sm"
+          style={{
+            backgroundColor: "white",
+            borderRight: "none",
+            // Убираем рамку, чтобы тень была единой
+            border: "1px solid #dee2e6",
+          }}
         >
           <img src={searchIcon} alt="Поиск" style={{ width: "20px" }} />
         </InputGroup.Text>
+
+        {/* Добавляем класс для скругления правой части и тень */}
         <Form.Control
+          className="ps-0 rounded-end-pill shadow-sm"
           style={{
             borderLeft: "none",
-            borderRadius: "0 24px 24px 0", // Скругление как в вашем дизайне
             height: "48px",
             fontSize: "16px",
+            // Убираем стандартную тень при фокусе, чтобы не было конфликтов
+            boxShadow: "none",
           }}
-          className="ps-0"
           type="text"
           placeholder="Поиск акционера..."
           aria-label="Поиск акционера"
