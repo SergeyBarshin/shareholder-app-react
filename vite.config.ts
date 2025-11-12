@@ -9,12 +9,12 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:8080", // Адрес вашего Go-бэкенда
+        target: "http://192.168.105.1:8080", // Адрес вашего Go-бэкенда
         changeOrigin: true,
       },
       // Прокси для Minio
       "/images": {
-        target: "http://localhost:9000",
+        target: "http://192.168.105.1:9000",
         changeOrigin: true,
       },
     },

@@ -7,6 +7,12 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Tauri Rust build files
+src-tauri/target
+# Если у вас есть другие папки с бинарниками Rust
+target
+
+# Node and Frontend build files
 node_modules
 dist
 dist-ssr

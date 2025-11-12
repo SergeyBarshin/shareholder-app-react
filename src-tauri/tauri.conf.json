@@ -1,0 +1,37 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+  "productName": "shareholder-app",
+  "version": "0.1.0",
+  "identifier": "com.shareholder.dev",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://192.168.105.1:3000",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Акционеры",
+        "width": 1000,
+        "height": 700,
+        "resizable": true,
+        "fullscreen": false,
+        "devtools": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self' http://192.168.105.1:3000; img-src 'self' http://192.168.105.1:9000; connect-src 'self' http://192.168.105.1:8080;"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": []
+  },
+  "plugins": {
+    "protocol": {
+      "assetScope": ["$APPDATA/**"]
+    }
+  }
+}
