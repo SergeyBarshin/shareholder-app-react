@@ -11,8 +11,9 @@
     "preview": "vite preview",
     "predeploy": "npm run build",
     "tauri:dev": "tauri dev",
-    "tauri:build": "tauri build",
-    "deploy": "gh-pages -d dist"
+    "tauri:build": "TAURI_BUILD=true npm run build && tauri build",
+    "deploy": "gh-pages -d dist",
+    "tauri": "tauri" 
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.10.1",

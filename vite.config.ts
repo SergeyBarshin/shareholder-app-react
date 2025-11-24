@@ -3,7 +3,12 @@ import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
 const REPO_NAME = "shareholder-app-react"; // Имя репозитория
-const BASE_PATH = `/${REPO_NAME}`; // /SergeyBarshin/
+
+const isTauri = process.env.TAURI_BUILD === "true";
+const BASE_PATH =
+  isTauri || process.env.NODE_ENV === "development" ? "/" : `/${REPO_NAME}/`;
+
+//const BASE_PATH = `/${REPO_NAME}`; // /SergeyBarshin/
 
 export default defineConfig({
   server: {
@@ -22,7 +27,7 @@ export default defineConfig({
     host: true,
   },
 
-  base: BASE_PATH,
+  base: "./",
 
   plugins: [
     react(),

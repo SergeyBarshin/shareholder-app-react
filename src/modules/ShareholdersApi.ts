@@ -1,6 +1,8 @@
 import type { Shareholder } from "./ShareholdersTypes";
 import { SHAREHOLDERS_MOCK } from "./mock";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export interface CartStatus {
   draft_id: number; // Обновлено на draft_id, как в API
   count: number; // Обновлено на count, как в API
@@ -15,8 +17,8 @@ const IS_TAURI =
 // 1. В собранном (Production) Tauri-приложении используем прямой IP (требование задания).
 // 2. Во всех остальных случаях (Web Dev/Prod, Tauri Dev) используем относительный путь (""),
 //    который в Dev-режиме перенаправляется через Vite Proxy.
-const API_BASE_URL =
-  IS_TAURI && !import.meta.env.DEV ? "http://192.168.105.1:8080" : "";
+//const API_BASE_URL =
+// IS_TAURI && !import.meta.env.DEV ? "http://192.168.105.1:8080" : "";
 
 // URL для Minio. Используется абсолютный IP, так как это всегда внешнее подключение.
 // Настройки CSP в tauri.conf.json должны разрешать этот адрес.
@@ -143,5 +145,99 @@ export async function getCartStatus(): Promise<CartStatus> {
     );
     // При любой другой ошибке (нет связи и т.д.) возвращаем неактивный статус
     return initialStatus;
+  }
+}
+
+// Helper для получения заголовков авторизации
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("authToken"); // Предполагаем, что токен хранится здесь после логина
+  if (!token) return { Accept: "application/json" };
+  return {
+    Accept: "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+};
+
+// Типы для новых API
+export interface Calculation {
+  id: number;
+  status: string;
+  total_profit: number | null;
+  created_at: string;
+  submitted_at: string | null;
+  completed_at: string | null;
+  creator: { id: number; login: string; is_moderator: boolean };
+  moderator: { id: number; login: string; is_moderator: boolean } | null;
+  completed_items_count: number;
+}
+
+export interface CalculationListParams {
+  status?: string;
+  from_date?: string;
+  to_date?: string;
+}
+
+/**
+ * Получает список заявок для модератора с фильтрацией.
+ */
+export async function listCalculations(
+  params: CalculationListParams
+): Promise<Calculation[]> {
+  const query = new URLSearchParams();
+  if (params.status) query.append("status", params.status);
+  if (params.from_date) query.append("from_date", params.from_date);
+  if (params.to_date) query.append("to_date", params.to_date);
+
+  try {
+    const res = await fetch(
+      `${API_BASE_URL}/api/v1/dividend-calculations?${query.toString()}`,
+      {
+        headers: getAuthHeaders(),
+      }
+    );
+    if (!res.ok) {
+      // При ошибках авторизации или других проблемах вернем пустой массив
+      if (res.status === 401 || res.status === 403) {
+        console.error("Unauthorized. Please log in as a moderator.");
+        // Можно добавить логику редиректа на страницу логина
+      }
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    return await res.json();
+  } catch (err) {
+    console.error("API request for listCalculations failed:", err);
+    return []; // При ошибке сети возвращаем пустой массив
+  }
+}
+
+/**
+ * Отправляет запрос на модерацию заявки (завершение или отклонение).
+ */
+export async function moderateCalculation(
+  id: number,
+  status: "completed" | "rejected"
+): Promise<void> {
+  try {
+    const res = await fetch(
+      `${API_BASE_URL}/api/v1/dividend-calculations/${id}/moderate`,
+      {
+        method: "PUT",
+        headers: {
+          ...getAuthHeaders(),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status }),
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+  } catch (err) {
+    console.error(
+      `API request for moderateCalculation failed for id ${id}:`,
+      err
+    );
+    throw err; // Пробрасываем ошибку, чтобы компонент мог ее обработать
   }
 }

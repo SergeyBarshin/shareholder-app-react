@@ -3,9 +3,14 @@ import { ROUTES } from "./Routes";
 import HomePage from "./pages/HomePage";
 import ShareholdersPage from "./pages/ShareholdersPage";
 import ShareholderPage from "./pages/ShareholderPage";
+import ModeratorPage from "./pages/ModeratorPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const BASE_NAME = "/shareholder-app-react";
+//const BASE_NAME = "/shareholder-app-react";
+
+const IS_TAURI =
+  typeof window !== "undefined" && (window as any).__TAURI_INTERNALS__;
+const BASE_NAME = IS_TAURI ? "/" : "/shareholder-app-react";
 
 function App() {
   return (

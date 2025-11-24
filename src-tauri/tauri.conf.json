@@ -10,6 +10,7 @@
     "beforeBuildCommand": "npm run build"
   },
   "app": {
+    "withGlobalTauri": true,
     "windows": [
       {
         "title": "Акционеры",
@@ -21,7 +22,7 @@
       }
     ],
     "security": {
-      "csp": "default-src 'self' http://192.168.105.1:3000; img-src 'self' http://192.168.105.1:9000; connect-src 'self' http://192.168.105.1:8080;"
+      "csp": null
     }
   },
   "bundle": {

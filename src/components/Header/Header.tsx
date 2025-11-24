@@ -22,13 +22,15 @@ export default function Header() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            {" "}
-            {/* me-auto: чтобы меню было слева */}
             <LinkContainer to={ROUTES.HOME}>
               <Nav.Link>Главная</Nav.Link>
             </LinkContainer>
             <LinkContainer to={ROUTES.SHAREHOLDERS}>
               <Nav.Link>Акционеры</Nav.Link>
+            </LinkContainer>
+            {/* --- ДОБАВЬТЕ ЭТУ ССЫЛКУ --- */}
+            <LinkContainer to={ROUTES.MODERATOR}>
+              <Nav.Link>Модерация</Nav.Link>
             </LinkContainer>
           </Nav>
         </Navbar.Collapse>
