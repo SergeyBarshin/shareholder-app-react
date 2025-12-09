@@ -14,6 +14,8 @@ import Header from "../components/Header/Header";
 import {
   listCalculations,
   moderateCalculation,
+} from "../modules/ShareholdersApi";
+import type {
   Calculation,
   CalculationListParams,
 } from "../modules/ShareholdersApi";

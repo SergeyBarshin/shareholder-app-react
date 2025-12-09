@@ -5,6 +5,7 @@ import ShareholdersPage from "./pages/ShareholdersPage";
 import ShareholderPage from "./pages/ShareholderPage";
 import ModeratorPage from "./pages/ModeratorPage";
 import "bootstrap/dist/css/bootstrap.min.css";
+import LoginPage from "./pages/LoginPage";
 
 //const BASE_NAME = "/shareholder-app-react";
 
@@ -17,8 +18,10 @@ function App() {
     <BrowserRouter basename={BASE_NAME}>
       <Routes>
         <Route path={ROUTES.HOME} element={<HomePage />} />
+        <Route path={ROUTES.LOGIN} element={<LoginPage />} />{" "}
         <Route path={ROUTES.SHAREHOLDERS} element={<ShareholdersPage />} />
         <Route path={ROUTES.SHAREHOLDER} element={<ShareholderPage />} />
+        <Route path={ROUTES.MODERATOR} element={<ModeratorPage />} />
       </Routes>
     </BrowserRouter>
   );
